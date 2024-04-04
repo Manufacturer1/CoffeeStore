@@ -1,0 +1,40 @@
+﻿@model CoffeeStore.Models.UserModel
+
+@{
+    ViewBag.Title = "ReservationDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="margin-top:200px">
+    <h2>Reservation Details for @Model.UserName</h2>
+
+    @if (Model.Reservations != null && Model.Reservations.Any())
+    {
+        <div class="container" style="margin-top: 200px;">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>Reservations:</h3>
+                    <ul>
+                        @foreach (var reservation in Model.Reservations)
+                        {
+                            <li>
+                                <strong>Reservation ID:</strong> @reservation.Id<br />
+                                <strong>First Name:</strong> @reservation.FirstName<br />
+                                <strong>Last Name:</strong> @reservation.LastName<br />
+                                <strong>Phone Number:</strong> @reservation.PhoneNumber<br />
+                                <strong>Time:</strong> @reservation.ReservationTime<br />
+                                <strong>Date:</strong> @reservation.ReservationDate.ToShortDateString()<br />
+                                <strong>Message:</strong> @reservation.Message<br />
+                            </li>
+                         
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <p>No reservations found for this user.</p>
+    }
+</div>

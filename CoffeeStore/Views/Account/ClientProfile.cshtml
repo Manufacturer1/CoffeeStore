@@ -1,0 +1,26 @@
+﻿@model CoffeeStore.Models.UserModel
+@{
+    ViewBag.Title = "ClientProfile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container" style="margin-top: 200px;">
+    <h2>Client Profile</h2>
+    <dl class="row">
+        <dt class="col-sm-3">Name</dt>
+        <dd class="col-sm-9">@Model.Name</dd>
+        <dt class="col-sm-3">UserName</dt>
+        <dd class="col-sm-9">@Model.UserName</dd>
+        <dt class="col-sm-3">Email</dt>
+        <dd class="col-sm-9">@Model.Email</dd>
+        <dt class="col-sm-3">Address</dt>
+        <dd class="col-sm-9">@Model.Address</dd>
+    </dl>
+
+    <!-- Add Edit button -->
+    <div class="text-right">
+        @Html.ActionLink("Edit", "EditClientProfile", "Account", null, new { @class = "btn btn-primary" })
+
+        @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-secondary" })
+    </div>
+</div>
