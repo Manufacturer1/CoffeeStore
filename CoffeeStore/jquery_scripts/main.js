@@ -1,6 +1,6 @@
 ﻿import { updateCartItemCount } from './ItemCount.js';
-import { UpdateDelivery, UpdateDiscount, UpdateFinalTotal } from './AddDiscount.js';
-import { calculateSubtotal, updateSubtotal, calculateFinalTotal } from './CartSubtotal.js';
+import { fetchDiscountAndUpdateCart } from './AddDiscount.js';
+
 
 $(document).ready(function () {
     let cartItemCount = localStorage.getItem("cartItemCount") || 0;
@@ -23,40 +23,8 @@ $(document).ready(function () {
         
     }
   
-    function fetchDiscountAndUpdateCart(cartItems) {
-        $.ajax({
-            url: 'SetDiscount',
-            type: 'POST',
-            success: function (response) {
-                handleDiscount(response, cartItems);
-            },
-            error: function (xhr, status, error) {
-                console.log("Error occurred while setting discount: " + error);
-            }
-        });
-    }
-    function handleDiscount(response, cartItems) {
-        if (response.Success) {
-            console.log("Discount set successfully");
-            var discount = response.discount.Percentage;
-             var subtotal = calculateSubtotal(cartItems);
-            var discountAmount = (subtotal * discount) / 100;
-            updateSubtotal(subtotal);
-            UpdateDiscount(discountAmount);
-            var FinalTotal = subtotal - discountAmount;
-            fetchDelivery(cartItems, FinalTotal);
-            UpdateFinalTotal(FinalTotal);
-        } else {
-            console.log("Discount expired!");
-            UpdateDiscount(0);
-            subtotal = calculateSubtotal(cartItems);
-            fetchDelivery(cartItems,subtotal);
-            updateSubtotal(subtotal);
-            UpdateFinalTotal(subtotal);
 
-            $('#alertContainer').fadeIn();
-        }
-    }
+
     function renderCartItem(item) {
         return `<tr class="text-center">
         <td class="product-remove">
@@ -85,33 +53,7 @@ $(document).ready(function () {
      
     }
 
-    function fetchDelivery(cartItems,FinalTotal) {
-        $.ajax({
-            url: 'SetDeliveyRequest',
-            type: 'POST',
-            success: function (response) {
-                handleDelivery(response,cartItems,FinalTotal);
-            },
-            error: function (xhr, status, error) {
-                console.log("Error occurred while setting discount: " + error);
-            }
-        });
-    }
-   
-    function handleDelivery(response,cartItems,subtotal) {
-        if (response.Success) {
-            console.log("Delivery set successfully");
-            var delivery = response.delivery.Cost;
-            var FinalTotal = subtotal + delivery;
-          
-            UpdateDelivery(delivery);
-            UpdateFinalTotal(FinalTotal);
-        } else {
-            console.log("Delivery was not set!");
-            UpdateDelivery(0);  
-            UpdateFinalTotal(subtotal); 
-        }
-    }
+ 
 
 
     loadCartItems();

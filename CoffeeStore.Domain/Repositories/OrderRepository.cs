@@ -35,7 +35,9 @@ namespace CoffeeStore.Domain.Repositories
 
         public Order Get(int id, string category)
         {
-            return db.Orders.Find(id);
+            return db.Orders
+            .Include(o => o.Items.Select(i => i.Product)) // Include the related items and their associated product
+            .SingleOrDefault(o => o.Id == id);
         }
         public IEnumerable<Order> GetAllOrdersWithUsers(string userId)
         {

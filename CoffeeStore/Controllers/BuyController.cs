@@ -13,6 +13,7 @@ using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using System;
+using CoffeeStore.BuiesnessLogic.Services;
 
 namespace CoffeeStore.Controllers
 {
@@ -42,10 +43,13 @@ namespace CoffeeStore.Controllers
             _orderService = orderService;
      
         }
-        // GET: Buy
+       
         [HttpGet]
         public ActionResult Shop()
         {
+            
+
+
             IEnumerable<ProductDTO> productDTOs = _cartService.GetProducts("Coffee");
             var product_mapper = new MapperConfiguration(cfg => cfg.CreateMap<ProductDTO, ProductModel>()).CreateMapper();
             var products = product_mapper.Map<IEnumerable<ProductDTO>, List<ProductModel>>(productDTOs);
@@ -66,6 +70,7 @@ namespace CoffeeStore.Controllers
             return View(products);
         }
 
+        
 
         protected override void Dispose(bool disposing)
         {
@@ -98,12 +103,12 @@ namespace CoffeeStore.Controllers
             }
             else if (discountDTO != null && discountDTO.ExpirationTime <= DateTime.Now)
             {
-                // Discount has expired
+                
                 return Json(new { Success = false,Message = "Discount has expired" });
             }
             else
             {
-                // No discount available
+                
                 return Json(new { Success = false, Message = "No discount available" });
             }
         }
@@ -236,5 +241,6 @@ namespace CoffeeStore.Controllers
             return View(model);  
         }
 
+ 
     }
 }

@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Set Discount";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["RenderNavbar"] = true;
 }
 
 <div class="container" style="margin-top:200px">
@@ -32,7 +33,7 @@
 </div>
 
 @functions {
-    // Method to get expiration times
+  
     public List<SelectListItem> GetExpirationTimes()
     {
         List<SelectListItem> expirationTimes = new List<SelectListItem>();

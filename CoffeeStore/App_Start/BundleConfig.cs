@@ -19,26 +19,6 @@ namespace CoffeeStore
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-       /*     bundles.Add(new ScriptBundle("~/bundles/ScriptLib").Include(
-     "~/Scripts/js/jquery.min.js",
-     "~/Scripts/js/jquery-migrate-3.0.1.min.js",
-     "~/Scripts/js/popper.min.js",
-     "~/Scripts/js/bootstrap.min.js",
-     "~/Scripts/js/jquery.easing.1.3.js",
-     "~/Scripts/js/jquery.waypoints.min.js",
-     "~/Scripts/js/jquery.stellar.min.js",
-     "~/Scripts/js/owl.carousel.min.js",
-     "~/Scripts/js/jquery.magnific-popup.min.js",
-     "~/Scripts/js/aos.js",
-     "~/Scripts/js/jquery.animateNumber.min.js",
-     "~/Scripts/js/bootstrap-datepicker.js",
-     "~/Scripts/js/jquery.timepicker.min.js",
-     "~/Scripts/js/google-map.js",
-     "~/Scripts/js/main.js",
-     "~/Scripts/js/range.js",
-     "~/Scripts/js/scrollax.min.js"
- ));*/
-
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js"));
@@ -57,6 +37,8 @@ namespace CoffeeStore
           "~/Content/css/icomoon.css",
           "~/Content/css/style.css",
           "~/Content/Site.css"
+
+
       ));
 
         }

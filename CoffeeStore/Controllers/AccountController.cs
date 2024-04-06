@@ -2,6 +2,7 @@
 using CoffeeStore.BuiesnessLogic.DTO;
 using CoffeeStore.BuiesnessLogic.Infrastructure;
 using CoffeeStore.BuiesnessLogic.Interfaces;
+using CoffeeStore.Domain.Entities;
 using CoffeeStore.Filters;
 using CoffeeStore.Models;
 using Microsoft.AspNet.Identity;
@@ -267,103 +268,54 @@ namespace CoffeeStore.Controllers
             return View("DiscountPage",discountViewModel);
         }
 
-        [Authorize(Roles ="admin")]
+        [Authorize(Roles = "admin")]
         [SessionTimeout]
         public async Task<ActionResult> AdminDashboard()
         {
-
-            var userAdmin = await UserService.GetUserById(User.Identity.GetUserId());
-            var adminModel = new UserModel
-            {
-                Email = userAdmin.Email,
-                Name = userAdmin.Name,
-                UserName = userAdmin.UserName,
-                Address = userAdmin.Address
-            };
-            IEnumerable<UserModel> users = new List<UserModel>();
-            var usersDto = await UserService.GetAllUsers();
-     
-            if (usersDto != null)
-            {
-                users = usersDto.Select(userDto =>
-                {
-                    var userModel = new UserModel
-                    {
-                        Id = userDto.Id,
-                        Email = userDto.Email,
-                        UserName = userDto.UserName,
-                        Address = userDto.Address,
-                        Name = userDto.Name,
-                    };
-                   
-                    var orderDto = orderService.GetOrdersByUserId(userModel.Id);
-               
-                    
-
-                    if (orderDto != null)
-                        {
-                        userModel.Orders = orderDto.Select(o => new OrderViewModel
-                        {
-                            Id = o.Id,
-                            FirstName = o.FirstName,
-                            LastName = o.LastName,
-                            PhoneNumber = o.Phone,
-                            Email = o.Email,
-                            Address = o.StreetAddress,
-                            Appartment = o.Appartment,
-                            City = o.City,
-                            Country = o.Country,
-                            PostCode = o.PostCode,
-                            BuyingTime = o.BuyingTime,
-                            ApplicationUserId = o.ApplicationUserId,
-                            TotalSumToPay = o.TotalSumToPay,
-                            Items = o.Items
-                        }).ToList();
-                         
-                        }
-                   
-                    return userModel;
-                });
-
-            }
-  
-            ViewBag.Users = users;  
+            var userAdmin = await GetUserAdmin();
+            var adminModel = MapUserToUserModel(userAdmin);
+            var users = await GetAllUsers();
+           
+            ViewBag.Users = users;
             return View(adminModel);
         }
-        [Authorize(Roles ="admin")]
-        public async  Task<ActionResult> ReservationDetails(string userId)
-        {
-            var reservationsDTO = reservationService.GetReservationsByUserId(userId);
-            var userDTO = await UserService.GetUserById(userId);
-            UserModel user = new UserModel();
-            if (userDTO != null)
-            {
-                user.Id = userDTO.Id;
-                user.Address = userDTO.Address;
-                user.UserName = userDTO.UserName; 
-                user.Email = userDTO.Email;
-                user.Name = userDTO.Name;
-                
-               
-                if (reservationsDTO != null)
-                {
 
-                    user.Reservations = reservationsDTO.Select(r => new ReservationViewModel
-                    {
-                        Id = r.Id,
-                        FirstName = r.FirstName,
-                        LastName = r.LastName,
-                        PhoneNumber = r.PhoneNumber,
-                        Message = r.Message,
-                        ReservationTime = r.ReservationTime,
-                        ReservationDate = r.ReservationDate,
-                    }).ToList();
-                }
-              
+        [HttpGet]
+        [Authorize(Roles="admin")]
+        [RedirectToRegister]
+        public ActionResult ItemsBought(int orderId)
+        {
+            var orderDto = orderService.GetOrder(orderId);
+            var products = new List<ProductModel>();
+            if (orderDto != null)
+            {
+                var order = MapOrderToOrderViewModel(orderDto);
+                products = order.Items.Select(item => new ProductModel
+                {
+                    Id = item.ProductId,
+                    Name = item.Product.Name,
+                    Quantity = item.Quantity,
+                    PathImage = item.Product.PathImage,
+                    Price = item.Product.Price,
+                }).ToList();
             }
-           return View(user);
-            
+            return View(products);
         }
+
+        [Authorize(Roles ="admin")]
+        public async Task<ActionResult> OrdersDetails(string userId)
+        {
+            var user = await GetUserWithOrders(userId);
+            return View(user);
+        }
+
+        [Authorize(Roles ="admin")]
+        public async Task<ActionResult> ReservationDetails(string userId)
+        {
+            var user = await GetUserWithReservations(userId);
+            return View(user);
+        }
+   
         public ActionResult Login()
         {
             ViewBag.CurrentAction = "Login";
@@ -465,7 +417,81 @@ namespace CoffeeStore.Controllers
 
             return RedirectToAction("AdminDashboard");
         }
-/*        private UserDTO GetAdminInfo()
+    
+
+
+        protected override void Dispose(bool disposing)
+        {
+            UserService.Dispose();
+            cartService.Dispose();
+            orderService.Dispose();
+            editProductService.Dispose();
+            reservationService.Dispose();   
+            base.Dispose(disposing);
+        }
+
+        #region Helpers
+        private async Task<UserModel> GetUserWithOrders(string userId)
+        {
+            var userDTO = await UserService.GetUserById(userId);
+            var ordersDTO = orderService.GetOrdersByUserId(userId);
+            var user = new UserModel();
+
+            if (userDTO != null)
+            {
+                user = MapUserToUserModel(userDTO);
+                AddOrdersToUser(user, ordersDTO);
+            }
+
+            return user;
+        }
+        private async Task<UserModel> GetUserWithReservations(string userId)
+        {
+            var userDTO = await UserService.GetUserById(userId);
+            var reservationsDTO = reservationService.GetReservationsByUserId(userId);
+            var ordersDto = orderService.GetOrdersByUserId(userId);
+            var user = new UserModel();
+
+            if (userDTO != null)
+            {
+                user = MapUserToUserModel(userDTO);
+
+                AddReservationsToUser(user, reservationsDTO);
+            }
+
+            return user;
+        }
+        
+        private void AddReservationsToUser(UserModel user, IEnumerable<ReservationTableDTO> reservationsDTO)
+        {
+            if (reservationsDTO != null)
+            {
+                user.Reservations = reservationsDTO.Select(r => MapReservationToViewModel(r)).ToList();
+            }
+        }
+        private ReservationViewModel MapReservationToViewModel(ReservationTableDTO reservationDTO)
+        {
+            return new ReservationViewModel
+            {
+                Id = reservationDTO.Id,
+                FirstName = reservationDTO.FirstName,
+                LastName = reservationDTO.LastName,
+                PhoneNumber = reservationDTO.PhoneNumber,
+                Message = reservationDTO.Message,
+                ReservationTime = reservationDTO.ReservationTime,
+                ReservationDate = reservationDTO.ReservationDate,
+            };
+        }
+      
+        private void AddOrdersToUser(UserModel user, IEnumerable<OrderDTO> ordersDTO)
+        {
+            if (ordersDTO != null)
+            {
+                user.Orders = ordersDTO.Select(o => MapOrderToOrderViewModel(o)).ToList();
+            }
+        }
+
+        private UserDTO GetAdminInfo()
         {
             return new UserDTO
             {
@@ -477,23 +503,72 @@ namespace CoffeeStore.Controllers
                 Role = "admin",
             };
         }
+        private OrderViewModel MapOrderToOrderViewModel(OrderDTO orderDto)
+        {
+            return new OrderViewModel
+            {
+                Id = orderDto.Id,
+                FirstName = orderDto.FirstName,
+                LastName = orderDto.LastName,
+                PhoneNumber = orderDto.Phone,
+                Email = orderDto.Email,
+                Address = orderDto.StreetAddress,
+                Appartment = orderDto.Appartment,
+                City = orderDto.City,
+                Country = orderDto.Country,
+                PostCode = orderDto.PostCode,
+                BuyingTime = orderDto.BuyingTime,
+                ApplicationUserId = orderDto.ApplicationUserId,
+                TotalSumToPay = orderDto.TotalSumToPay,
+                Items = orderDto.Items
+            };
+        }
         private async Task SetInitialDataAsync()
         {
             UserDTO adminUser = GetAdminInfo();
             await UserService.SetInitialData(adminUser, new List<string> { "user", "admin" });
         }
-
-*/
-        protected override void Dispose(bool disposing)
+        private async Task<UserDTO> GetUserAdmin()
         {
-            UserService.Dispose();
-            cartService.Dispose();
-            orderService.Dispose();
-            editProductService.Dispose();
-            reservationService.Dispose();   
-            base.Dispose(disposing);
+            var userId = User.Identity.GetUserId();
+            return await UserService.GetUserById(userId);
         }
 
+        private UserModel MapUserToUserModel(UserDTO user)
+        {
+            return new UserModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                Name = user.Name,
+                UserName = user.UserName,
+                Address = user.Address
+            };
+        }
+    
+
+      
+
+        private async Task<IEnumerable<UserModel>> GetAllUsers()
+        {
+            var usersDto = await UserService.GetAllUsers();
+            if (usersDto == null)
+                return Enumerable.Empty<UserModel>();
+
+            var users = new List<UserModel>();
+            foreach (var userDto in usersDto)
+            {
+                var userModel = MapUserToUserModel(userDto);
+                users.Add(userModel);
+            }
+            return users;
+        }
+
+        private IEnumerable<OrderDTO> GetOrdersByUserId(string userId)
+        {
+            return orderService.GetOrdersByUserId(userId);
+        }
+        #endregion
     }
 
 }

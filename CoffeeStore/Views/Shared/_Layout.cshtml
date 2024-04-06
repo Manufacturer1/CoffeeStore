@@ -9,28 +9,32 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-
+    @{
+        var renderNavbar = ViewData["RenderNavbar"] != null && (bool)ViewData["RenderNavbar"];
+    }
 </head>
 
 <body>
-    @Html.Partial("_Navbar")
-
-  
-
-    @RenderBody()
-
+    @if (renderNavbar)
+    {
+        @Html.Partial("_Navbar")
+    }
 
 
-    @Html.Partial("_Footer")
+        @RenderBody()
 
 
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+        @Html.Partial("_Footer")
 
-    @Html.Partial("_Scripts")
 
-</body>
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+
+        @Html.Partial("_Scripts")
+
+    </body>
 
 </html>

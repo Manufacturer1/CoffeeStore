@@ -489,6 +489,8 @@
     <Content Include="Views\Account\ReservationDetails.cshtml" />
     <Content Include="Views\Account\DiscountPage.cshtml" />
     <Content Include="Views\Account\DeliveryPage.cshtml" />
+    <Content Include="Views\Account\OrdersDetails.cshtml" />
+    <Content Include="Views\Account\ItemsBought.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
