@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 
 namespace CoffeeStore.BuiesnessLogic.Services
 {
@@ -117,6 +118,89 @@ namespace CoffeeStore.BuiesnessLogic.Services
             var productsDTO = mapper.Map<IEnumerable<Product>,IEnumerable<ProductDTO>>(products);
             return productsDTO;
         }
-     
+        public void SetDiscount(DiscountDTO discountDto)
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DiscountDTO, Discount>()).CreateMapper();
+            var discount = mapper.Map<DiscountDTO, Discount>(discountDto);
+            var allDiscounts = DataBase.Discounts.GetAll(null).LastOrDefault();
+            if(allDiscounts == null)
+            {
+                DataBase.Discounts.Create(discount, null);
+                DataBase.Save();
+            }
+            else
+            {
+                var allDisc = new Discount
+                {
+                    Id = allDiscounts.Id,
+                    ExpirationTime = discount.ExpirationTime,
+                    Percentage = discount.Percentage,
+                    SetTime = discount.SetTime,
+                };
+                DataBase.Discounts.Update(allDisc);
+                DataBase.Save();
+            }
+       
+
+        }
+
+        public IEnumerable<DiscountDTO> GetAllDiscounts()
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<Discount, DiscountDTO>()).CreateMapper();
+            var discounts = DataBase.Discounts.GetAll(null);
+            var discountsDTO = mapper.Map<IEnumerable<Discount>, List<DiscountDTO>>(discounts);
+            return discountsDTO;    
+        }
+        public decimal CalculateTotalPrice()
+        {
+            var cartItems = GetCart();
+            var discountDTO = GetAllDiscounts().LastOrDefault();
+            var deliveryDto = GetAllDeliveriesCost().LastOrDefault();
+            var totalPrice = cartItems.Sum(x => x.Quantity * x.Product.Price);
+
+   
+            if (discountDTO != null && discountDTO.ExpirationTime > DateTime.Now)
+            {
+                var discountPercentage = discountDTO.Percentage;
+                var discountAmount = (totalPrice * discountPercentage) / 100;
+                totalPrice -= discountAmount;
+            }
+
+            totalPrice += deliveryDto?.Cost ?? 0;
+
+            return totalPrice;
+        }
+
+
+        public void SetDelivery(DeliveryCostDTO deliveryCostDTO)
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DeliveryCostDTO, DeliveryCost>()).CreateMapper();
+            var delivery = mapper.Map<DeliveryCostDTO,DeliveryCost>(deliveryCostDTO);
+            var allDelivery = DataBase.DeliveryCosts.GetAll(null).LastOrDefault();
+            if(allDelivery == null)
+            {
+                DataBase.DeliveryCosts.Create(delivery, null);
+                DataBase.Save();
+            }
+            else
+            {
+                var allDel = new DeliveryCost
+                {
+                    Id = allDelivery.Id,
+                    Cost = delivery.Cost,
+                };
+                DataBase.DeliveryCosts.Update(allDel);
+                DataBase.Save();
+            }
+        
+        }
+        public IEnumerable<DeliveryCostDTO> GetAllDeliveriesCost()
+        {
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DeliveryCost, DeliveryCostDTO>()).CreateMapper();
+            var deliveries = DataBase.DeliveryCosts.GetAll(null);
+            var deliveriesDTO = mapper.Map<IEnumerable<DeliveryCost>, List<DeliveryCostDTO>>(deliveries);
+            return deliveriesDTO;   
+        }
+
     }
 }

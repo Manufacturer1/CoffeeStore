@@ -6,7 +6,7 @@
 <div class="container" style="margin-top:200px">
     <div class="row">
         <div class="col-md-6">
-            <div class="card">
+            <div class="card" style="width:750px">
                 <div class="card-body">
                     <h3 class="card-title" style="color:black">Welcome, @Model.Name!</h3>
                     <p class="card-text"><strong>Email:</strong> @Model.Email</p>
@@ -16,7 +16,10 @@
                 <div class="text-right">
                     @Html.ActionLink("Edit", "EditClientProfile", "Account", null, new { @class = "btn btn-primary" })
                     @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-secondary" })
-                    @Html.ActionLink("View Products", "ViewAllProducts", "Account", null, new { @class = "btn btn-secondary" })
+                    @Html.ActionLink("View Products", "ViewAllProducts", "Account", null, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Set Discount", "DiscountPage", "Account", null, new { @class = "btn btn-warning" })
+                    @Html.ActionLink("Set Delivery Cost", "DeliveryPage", "Account", null, new { @class = "btn btn-success" })
+
 
 
                 </div>

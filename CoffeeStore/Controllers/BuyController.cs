@@ -12,6 +12,7 @@ using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
+using System;
 
 namespace CoffeeStore.Controllers
 {
@@ -84,7 +85,47 @@ namespace CoffeeStore.Controllers
 
             return View(cartItems);
         }
-     
+        [HttpPost]
+        public JsonResult SetDiscount()
+        {
+            var discountDTO = _cartService.GetAllDiscounts().LastOrDefault();
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DiscountDTO, DiscountViewModel>()).CreateMapper();
+
+            if (discountDTO != null && discountDTO.ExpirationTime > DateTime.Now)
+            {
+                var discount = mapper.Map<DiscountDTO, DiscountViewModel>(discountDTO);
+                return Json(new { Success = true, discount });
+            }
+            else if (discountDTO != null && discountDTO.ExpirationTime <= DateTime.Now)
+            {
+                // Discount has expired
+                return Json(new { Success = false,Message = "Discount has expired" });
+            }
+            else
+            {
+                // No discount available
+                return Json(new { Success = false, Message = "No discount available" });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult SetDeliveyRequest()
+        {
+            var deliveryDTO = _cartService.GetAllDeliveriesCost().LastOrDefault();
+            var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DeliveryCostDTO, DeliveryCostViewModel>()).CreateMapper();
+
+            if(deliveryDTO != null && deliveryDTO.Cost > 0)
+            {
+                var delivery = mapper.Map<DeliveryCostDTO,DeliveryCostViewModel>(deliveryDTO);
+                return Json(new {Success = true, delivery });
+            }
+            else
+            {
+                return Json(new { Success = false, Message = "Delivery was not set yet!" });
+            }
+        }
+
+
         [HttpPost]
         public JsonResult AddToCart(int ProductId,string category)
         {
@@ -160,10 +201,10 @@ namespace CoffeeStore.Controllers
                 var user = await UserService.GetUserById(User.Identity.GetUserId());
                 var cartItems = _cartService.GetCart();
                 ViewBag.CartItems = cartItems.ToList();
-             
 
-                decimal delivery = 2.5m;
-                decimal totalSumToPay = cartItems.Sum(item => (item.Quantity * item.Product.Price) + delivery);
+                decimal totalSumToPay = _cartService.CalculateTotalPrice();
+
+
                 if (totalSumToPay > 0)
                 {
                     var orderDto = new OrderDTO

@@ -64,7 +64,12 @@
                         </span>
                     </a>
                 </li>
-
+             @*   @if (Request.IsAuthenticated && User.IsInRole("admin"))
+                {
+                <li class="nav-item" style="margin-top: 9px; margin-left:20px;">
+                   <img src="~/Content/images/icons8-bell-48.png"  />
+                </li>
+                }*@
             </ul>
         </div>
     </div>

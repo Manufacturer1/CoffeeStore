@@ -224,6 +224,48 @@ namespace CoffeeStore.Controllers
            
             return View(model);
         }
+        [HttpGet]
+        [Authorize(Roles ="admin")]
+        public ActionResult DiscountPage()
+        {
+
+            return View();
+        }
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public ActionResult DeliveryPage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public ActionResult SetDelivery(DeliveryCostViewModel deliveryCostViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DeliveryCostViewModel, DeliveryCostDTO>()).CreateMapper();
+                var delivery = mapper.Map<DeliveryCostViewModel, DeliveryCostDTO>(deliveryCostViewModel);
+                cartService.SetDelivery(delivery);
+                return RedirectToAction("AdminDashboard");
+            }
+            return View("DeliveryPage",deliveryCostViewModel);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public ActionResult SetDiscount(DiscountViewModel discountViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DiscountViewModel, DiscountDTO>()).CreateMapper();
+                var discount = mapper.Map<DiscountViewModel, DiscountDTO>(discountViewModel);
+                cartService.SetDiscount(discount);
+                return RedirectToAction("AdminDashboard");
+            }
+
+            return View("DiscountPage",discountViewModel);
+        }
 
         [Authorize(Roles ="admin")]
         [SessionTimeout]

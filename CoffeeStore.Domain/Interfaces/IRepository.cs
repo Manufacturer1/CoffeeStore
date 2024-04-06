@@ -17,6 +17,6 @@ namespace CoffeeStore.Domain.Interfaces
         IEnumerable<Order> GetAllOrdersWithUsers(string userId);
         IEnumerable<Product> RetrieveAllProducts();
         IEnumerable<T> GetByUserId(string userId);  
-        void Update(Product item);
+        void Update(T item);
     }
 }

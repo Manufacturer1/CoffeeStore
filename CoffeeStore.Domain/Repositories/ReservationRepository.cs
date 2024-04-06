@@ -61,7 +61,7 @@ namespace CoffeeStore.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(Product item)
+        public void Update(ReservationTable item)
         {
             throw new NotImplementedException();
         }

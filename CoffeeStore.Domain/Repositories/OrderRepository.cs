@@ -72,7 +72,7 @@ namespace CoffeeStore.Domain.Repositories
             throw new NotImplementedException();
         }
 
-        public void Update(Product item)
+        public void Update(Order item)
         {
             throw new NotImplementedException();
         }

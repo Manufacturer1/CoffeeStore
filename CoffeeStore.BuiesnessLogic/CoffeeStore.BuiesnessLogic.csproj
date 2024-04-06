@@ -96,6 +96,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuisnessModels\CustomValidator.cs" />
+    <Compile Include="DTO\DeliveryCostDTO.cs" />
+    <Compile Include="DTO\DiscountDTO.cs" />
     <Compile Include="DTO\ProductDTO.cs" />
     <Compile Include="BuisnessModels\Item.cs" />
     <Compile Include="DTO\OrderDTO.cs" />

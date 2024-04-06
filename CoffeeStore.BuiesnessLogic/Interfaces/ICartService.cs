@@ -13,6 +13,12 @@ namespace CoffeeStore.BuiesnessLogic.Interfaces
         ProductDTO GetProduct(int? id,string category);
         IEnumerable<ProductDTO> GetProducts(string category);
         IEnumerable<ProductDTO> RetrieveAllProducts();
+        void SetDiscount(DiscountDTO discountDto);
+        IEnumerable<DiscountDTO> GetAllDiscounts();
+        decimal CalculateTotalPrice();
+
+        IEnumerable<DeliveryCostDTO> GetAllDeliveriesCost();
+        void SetDelivery(DeliveryCostDTO deliveryCostDTO);
         void Dispose();
 
     }

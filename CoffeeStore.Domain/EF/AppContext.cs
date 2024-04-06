@@ -1,8 +1,6 @@
 ﻿using CoffeeStore.Domain.Entities;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration;
-using System.Reflection.Emit;
 
 namespace CoffeeStore.Domain.EF
 {
@@ -10,7 +8,9 @@ namespace CoffeeStore.Domain.EF
     {
         
       
+        public DbSet<DeliveryCost> DeliveryCosts { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Discount> Discounts { get; set; }
         public DbSet<OrderItem> orderItems { get; set; }
         public DbSet<ClientProfile> ClientProfiles { get; set; }
         public DbSet<Order> Orders { get; set; }    

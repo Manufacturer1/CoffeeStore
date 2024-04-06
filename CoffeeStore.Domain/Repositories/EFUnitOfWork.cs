@@ -15,6 +15,9 @@ namespace CoffeeStore.Domain.Repositories
         private OrderRepository orderRepository;
         private ApplicationUserManager userManager;
         private ApplicationRoleManager roleManager;
+        private DiscountRepository discountRepository;
+        
+        private DeliveryCostRepository deliveryCostRepository;
 
 
 
@@ -56,6 +59,24 @@ namespace CoffeeStore.Domain.Repositories
             {
                 if (reservationRepository == null) return new ReservationRepository(db);
                 return reservationRepository;
+            }
+        }
+
+        public IRepository<Discount> Discounts
+        {
+            get
+            {
+                if (discountRepository == null) return new DiscountRepository(db);
+                return discountRepository;
+            }
+        }
+
+        public IRepository<DeliveryCost> DeliveryCosts
+        {
+            get
+            {
+                if(deliveryCostRepository == null) return new DeliveryCostRepository(db);
+                return deliveryCostRepository;
             }
         }
 

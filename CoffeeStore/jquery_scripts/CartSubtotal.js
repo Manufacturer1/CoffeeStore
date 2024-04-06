@@ -4,7 +4,12 @@
     }, 0);
 }
 
-// Function to update the subtotal displayed on the webpage
+
 export function updateSubtotal(subtotal) {
     $('#subtotal').text(subtotal.toLocaleString('en-US', { style: 'currency', currency: 'USD' }));
+}
+
+export function calculateFinalTotal(subtotal,delivery,discount) {
+    var FinalTotal = subtotal + delivery + discount;
+    return FinalTotal;
 }

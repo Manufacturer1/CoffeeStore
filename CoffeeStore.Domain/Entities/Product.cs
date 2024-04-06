@@ -1,5 +1,4 @@
-﻿using CoffeeStore.Domain.Interfaces;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace CoffeeStore.Domain.Entities
@@ -11,9 +10,7 @@ namespace CoffeeStore.Domain.Entities
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Category { get; set; }
-
-        public string PathImage { get; set; }   
-
+        public string PathImage { get; set; }
 
     }
 }

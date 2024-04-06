@@ -13,5 +13,6 @@ namespace CoffeeStore.Models
         public string Category { get; set; }
         public string PathImage { get; set; }
         public int Quantity { get; set; }
+
     }
 }

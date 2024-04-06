@@ -1,4 +1,6 @@
-﻿namespace CoffeeStore.BuiesnessLogic.DTO
+﻿using System;
+
+namespace CoffeeStore.BuiesnessLogic.DTO
 {
     public class ProductDTO
     {
@@ -8,5 +10,6 @@
         public string Category { get; set; }
 
         public string PathImage { get; set; }
+
     }
 }

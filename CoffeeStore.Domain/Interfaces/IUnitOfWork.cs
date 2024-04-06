@@ -10,6 +10,8 @@ namespace CoffeeStore.Domain.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
+        IRepository<DeliveryCost> DeliveryCosts { get; }
+        IRepository<Discount> Discounts { get; }
         IRepository<ReservationTable> ReservationsRepository { get; }
         IRepository<Product> Products { get; }
         IRepository<Order> Orders { get; }

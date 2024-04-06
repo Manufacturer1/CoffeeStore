@@ -187,6 +187,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DeliveryCostViewModel.cs" />
+    <Compile Include="Models\DiscountViewModel.cs" />
     <Compile Include="Models\EditModel.cs" />
     <Compile Include="Models\OrderViewModel.cs" />
     <Compile Include="Models\PasswordModel.cs" />
@@ -280,6 +282,7 @@
     <Content Include="Content\images\gallery-2.jpg" />
     <Content Include="Content\images\gallery-3.jpg" />
     <Content Include="Content\images\gallery-4.jpg" />
+    <Content Include="Content\images\icons8-bell-48.png" />
     <Content Include="Content\images\image_1.jpg" />
     <Content Include="Content\images\image_2.jpg" />
     <Content Include="Content\images\image_3.jpg" />
@@ -301,7 +304,6 @@
     <Content Include="jquery_scripts\main.js" />
     <Content Include="jquery_scripts\CartSubtotal.js" />
     <Content Include="jquery_scripts\ItemCount.js" />
-    <Content Include="jquery_scripts\RedirectToRegister.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -485,6 +487,8 @@
     <Content Include="Views\Account\ViewAllProducts.cshtml" />
     <Content Include="Views\Home\SuccessfulReservation.cshtml" />
     <Content Include="Views\Account\ReservationDetails.cshtml" />
+    <Content Include="Views\Account\DiscountPage.cshtml" />
+    <Content Include="Views\Account\DeliveryPage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
