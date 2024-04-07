@@ -5,16 +5,14 @@
     ViewData["RenderNavbar"] = false;
 }
 
-
 <section class="ftco-section ftco-cart">
-
+    <a style="margin-left:1150px" href="javascript:history.back()" class="btn btn-primary">Back to Previous Page</a>
     <div class="container">
         <div class="row">
             <div class="col-md-12 ftco-animate">
                 <h2>Items Bought</h2>
                 <div id="cartTable" class="cart-list">
                     <table class="table">
-
                         <thead class="thead-primary">
                             <tr class="text-center">
                                 <th>&nbsp;</th>
@@ -36,7 +34,20 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+
             </div>
         </div>
+    </div>
 </section>
+
+<style>
+    td {
+        text-align: center;
+        color: white;
+        margin-top: 20px;
+    }
+
+    td {
+        font-size: 18px;
+    }
+</style>

@@ -361,7 +361,7 @@ namespace CoffeeStore.Controllers
         {
             Session.Clear();
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Login");
         }
         [AllowAnonymous]
         public ActionResult Register()

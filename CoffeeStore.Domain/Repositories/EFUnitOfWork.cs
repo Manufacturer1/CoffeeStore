@@ -97,6 +97,7 @@ namespace CoffeeStore.Domain.Repositories
             {
                 if (disposing)
                 {
+                    
                     userManager.Dispose();
                     roleManager.Dispose();
                     clientManager.Dispose();

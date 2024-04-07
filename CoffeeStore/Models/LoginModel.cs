@@ -9,6 +9,7 @@ namespace CoffeeStore.Models
     public class LoginModel
     {
         [Required]
+        [Display(Name ="User Name")]
         public string UserName { get; set; }
         [Required]
         [DataType(DataType.Password)]

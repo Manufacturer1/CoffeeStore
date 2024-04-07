@@ -1,5 +1,5 @@
 ﻿@model CoffeeStore.Models.ReservationViewModel
-
+@using System.Globalization
 @{
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -84,7 +84,7 @@
                 </div>
             </div>
             <!--BOOK TABLE FORM -->
-          
+
             <div class="book p-4">
                 <h3>Book a Table</h3>
                 @using (Html.BeginForm("MakeReservation", "Home", FormMethod.Post, new { @class = "appointment-form" }))
@@ -130,14 +130,14 @@
                     </div>
                 }
             </div>
-            
+
 
 
 
         </div>
-            
 
-            </div>
+
+    </div>
 </section>
 
 <section class="ftco-about d-md-flex">
@@ -242,7 +242,7 @@
                 <div class="row">
                     <div class="col-md-6 col-lg-3 d-flex justify-content-center counter-wrap ftco-animate">
                         <div class="block-18 text-center">
-                           
+
                             <div class="text">
                                 <div class="icon"><span class="flaticon-coffee-cup"></span></div>
                                 <strong class="number" data-number="100">0</strong>
@@ -292,7 +292,7 @@
                 <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts.</p>
             </div>
         </div>
-      
+
         <div class="row">
             @foreach (var coffee in ViewBag.Coffees)
             {
@@ -303,10 +303,11 @@
                         <div class="text text-center pt-4">
                             <h3><a href="#">@coffee.Name</a></h3>
                             <p>A small river named Duden flows by their place and supplies</p>
-                            <p class="price"><span>$@coffee.Price</span>
+                            <p class="price">
+                                <span>$@coffee.Price</span>
 
                             </p>
-                            <form id="add-item-form" data-item-id="@coffee.Id"data-item-category="Coffee" action="@Url.Action("AddToCart", "Buy", new { ProductId = coffee.Id,category="Coffee" })" method="post">
+                            <form id="add-item-form" data-item-id="@coffee.Id" data-item-category="Coffee" action="@Url.Action("AddToCart", "Buy", new { ProductId = coffee.Id,category="Coffee" })" method="post">
                                 @Html.AntiForgeryToken()
                                 <button type="submit" class="btn btn-primary btn-outline-primary add-to-cart">Add To Cart</button>
                             </form>
@@ -326,8 +327,8 @@
                 </div>
             }
         </div>
-        
-        </div>
+
+    </div>
 </section>
 
 <section class="ftco-gallery">
@@ -391,7 +392,7 @@
                         <div class="tab-content ftco-animate" id="v-pills-tabContent">
 
                             <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel" aria-labelledby="v-pills-1-tab">
-                               
+
                                 <div class="row">
                                     @{ var counter = 0; }
                                     @foreach (var item in ViewBag.MainDish)
@@ -404,7 +405,7 @@
                                                     <div class="text">
                                                         <h3><a href="#">@item.Name</a></h3>
                                                         <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
-                                                        <p class="price"><span>@item.Price</span></p>
+                                                        <p class="price"><span>$@item.Price</span></p>
                                                         <form id="add-item-form" data-item-id="@item.Id" data-item-category="MainDish" action="@Url.Action("AddToCart", "Buy", new { ProductId = item.Id, category = "MainDish" })" method="post">
                                                             @Html.AntiForgeryToken()
                                                             <button type="submit" class="btn btn-primary btn-outline-primary add-to-cart">Add To Cart</button>
@@ -414,35 +415,35 @@
                                             </div>
                                             counter++;
                                         }
-                                    
+
                                     }
 
 
                                 </div>
-                             
+
                             </div>
 
                             <div class="tab-pane fade" id="v-pills-2" role="tabpanel" aria-labelledby="v-pills-2-tab">
                                 <div class="row">
-                                    @{  counter = 0;}
+                                    @{ counter = 0;}
                                     @foreach (var item in ViewBag.Drinks)
                                     {
                                         if (counter < 3)
                                         {
-                                    <div class="col-md-4 text-center">
-                                        <div class="menu-wrap">
-                                            <a href="#" class="menu-img img mb-4" style="background-image: url(@item.PathImage);"></a>
-                                            <div class="text">
-                                                <h3><a href="#">@item.Name</a></h3>
-                                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
-                                                <p class="price"><span>@item.Price</span></p>
-                                                <form id="add-item-form" data-item-id="@item.Id" data-item-category="Drink" action="@Url.Action("AddToCart", "Buy", new { ProductId = item.Id, category = "Drink" })" method="post">
-                                                    @Html.AntiForgeryToken()
-                                                    <button type="submit" class="btn btn-primary btn-outline-primary add-to-cart">Add To Cart</button>
-                                                </form>
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(@item.PathImage);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">@item.Name</a></h3>
+                                                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+                                                        <p class="price"><span>$@item.Price</span></p>
+                                                        <form id="add-item-form" data-item-id="@item.Id" data-item-category="Drink" action="@Url.Action("AddToCart", "Buy", new { ProductId = item.Id, category = "Drink" })" method="post">
+                                                            @Html.AntiForgeryToken()
+                                                            <button type="submit" class="btn btn-primary btn-outline-primary add-to-cart">Add To Cart</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
                                             counter++;
                                         }
 
@@ -454,23 +455,24 @@
                             <div class="tab-pane fade" id="v-pills-3" role="tabpanel" aria-labelledby="v-pills-3-tab">
                                 <div class="row">
                                     @{ counter = 0;}
-                                    @foreach (var item in ViewBag.Desserts) {
+                                    @foreach (var item in ViewBag.Desserts)
+                                    {
                                         if (counter < 3)
                                         {
-                                    <div class="col-md-4 text-center">
-                                        <div class="menu-wrap">
-                                            <a href="#" class="menu-img img mb-4" style="background-image: url(@item.PathImage);"></a>
-                                            <div class="text">
-                                                <h3><a href="#">@item.Name</a></h3>
-                                                <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
-                                                <p class="price"><span>@item.Price</span></p>
-                                                <form id="add-item-form" data-item-id="@item.Id" data-item-category="Dessert" action="@Url.Action("AddToCart", "Buy", new { ProductId = item.Id, category = "Dessert" })" method="post">
-                                                    @Html.AntiForgeryToken()
-                                                    <button type="submit" class="btn btn-primary btn-outline-primary add-to-cart">Add To Cart</button>
-                                                </form>
+                                            <div class="col-md-4 text-center">
+                                                <div class="menu-wrap">
+                                                    <a href="#" class="menu-img img mb-4" style="background-image: url(@item.PathImage);"></a>
+                                                    <div class="text">
+                                                        <h3><a href="#">@item.Name</a></h3>
+                                                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia.</p>
+                                                        <p class="price"><span>$@item.Price</span></p>
+                                                        <form id="add-item-form" data-item-id="@item.Id" data-item-category="Dessert" action="@Url.Action("AddToCart", "Buy", new { ProductId = item.Id, category = "Dessert" })" method="post">
+                                                            @Html.AntiForgeryToken()
+                                                            <button type="submit" class="btn btn-primary btn-outline-primary add-to-cart">Add To Cart</button>
+                                                        </form>
+                                                    </div>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </div>
                                             counter++;
                                         }
                                     }
@@ -629,18 +631,18 @@
 
 @section scripts{
     <script>
-    function captureTime() {
-        var selectedTime = document.getElementById("ReservationTime").value;
-        document.getElementById("HiddenReservationTime").value = selectedTime; 
+        function captureTime() {
+            var selectedTime = document.getElementById("ReservationTime").value;
+            document.getElementById("HiddenReservationTime").value = selectedTime;
         }
-       
-       function updateHiddenDate() {
-          var selectedDate = new Date(document.getElementById("ReservationDate").value);
-        
 
-           document.getElementById("HiddenReservationDate").value = selectedDate;
-       }
-        
-   
+        function updateHiddenDate() {
+            var selectedDate = new Date(document.getElementById("ReservationDate").value);
+
+
+            document.getElementById("HiddenReservationDate").value = selectedDate;
+        }
+
+
     </script>
-    }
+}
