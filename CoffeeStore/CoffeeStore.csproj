@@ -240,6 +240,7 @@
     <Content Include="Content\css\style.css" />
     <Content Include="Content\custom-form.css" />
     <Content Include="Content\custom-login-form.css" />
+    <Content Include="Content\custom-profile.css" />
     <Content Include="Content\fonts\flaticon\backup.txt" />
     <Content Include="Content\fonts\flaticon\font\flaticon.css" />
     <Content Include="Content\fonts\flaticon\font\flaticon.html" />
