@@ -163,7 +163,15 @@ namespace CoffeeStore.Controllers
             return View(model);
         }
 
+        [Authorize(Roles ="admin")]
+        [HttpGet]
+        public async Task<ActionResult> OtherUsers()
+        {
+            var users = await GetAllUsers();
 
+           
+            return View(users);
+        }
 
 
         [Authorize(Roles = "user")]
@@ -262,6 +270,7 @@ namespace CoffeeStore.Controllers
                 var mapper = new MapperConfiguration(cfg => cfg.CreateMap<DiscountViewModel, DiscountDTO>()).CreateMapper();
                 var discount = mapper.Map<DiscountViewModel, DiscountDTO>(discountViewModel);
                 cartService.SetDiscount(discount);
+
                 return RedirectToAction("AdminDashboard");
             }
 
@@ -274,9 +283,7 @@ namespace CoffeeStore.Controllers
         {
             var userAdmin = await GetUserAdmin();
             var adminModel = MapUserToUserModel(userAdmin);
-            var users = await GetAllUsers();
-           
-            ViewBag.Users = users;
+            
             return View(adminModel);
         }
 
@@ -415,7 +422,7 @@ namespace CoffeeStore.Controllers
                 TempData["ErrorMessage"] = "Failed to delete user.";
             }
 
-            return RedirectToAction("AdminDashboard");
+            return RedirectToAction("OtherUsers");
         }
 
         [HttpPost]
@@ -426,8 +433,9 @@ namespace CoffeeStore.Controllers
             if (!response)
             {
                 ModelState.AddModelError("", "The discount was already removed!");
-                return View("DiscountPage", new DiscountViewModel());
+                return View("DiscountPage");
             }
+           
             return RedirectToAction("DiscountPage", "Account");
         }
 

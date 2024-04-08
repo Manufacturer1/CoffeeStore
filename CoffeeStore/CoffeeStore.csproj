@@ -249,6 +249,8 @@
     <Content Include="Content\fonts\ionicons\css\ionicons.min.css" />
     <Content Include="Content\fonts\ionicons\fonts\ionicons.svg" />
     <Content Include="Content\fonts\open-iconic\open-iconic.svg" />
+    <Content Include="Content\images\client.jpg" />
+    <Content Include="Content\images\Admin.jpg" />
     <Content Include="Content\images\about.jpg" />
     <Content Include="Content\images\bg_1.jpg" />
     <Content Include="Content\images\bg_2.jpg" />
@@ -509,6 +511,7 @@
     <Content Include="Views\Account\DeliveryPage.cshtml" />
     <Content Include="Views\Account\OrdersDetails.cshtml" />
     <Content Include="Views\Account\ItemsBought.cshtml" />
+    <Content Include="Views\Account\OtherUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

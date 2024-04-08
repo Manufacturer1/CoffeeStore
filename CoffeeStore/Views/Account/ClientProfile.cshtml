@@ -6,24 +6,19 @@
 }
 
 <link rel="stylesheet" type="text/css" href="~/Content/custom-profile.css">
-
-<div class="container profile-container" style="margin-top:200px;margin-bottom:200px">
-    <h2 class="profile-title">Welcome To Your Profile</h2>
-    <dl class="row profile-info">
-        <dt class="col-sm-3">Name</dt>
-        <dd class="col-sm-9">@Model.Name</dd>
-        <dt class="col-sm-3">Username</dt>
-        <dd class="col-sm-9">@Model.UserName</dd>
-        <dt class="col-sm-3">Email</dt>
-        <dd class="col-sm-9">@Model.Email</dd>
-        <dt class="col-sm-3">Address</dt>
-        <dd class="col-sm-9">@Model.Address</dd>
-    </dl>
-
-    <!-- Add Edit button -->
-    <div class="text-right profile-actions">
-        @Html.ActionLink("Edit", "EditClientProfile", "Account", null, new { @class = "btn btn-primary" })
-
-        @Html.ActionLink("Change Password", "ChangePassword", "Account", null, new { @class = "btn btn-secondary" })
+<section class="vh-100" style="margin-top: 150px; margin-bottom:150px">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="user-profile text-center">
+                    <img src="~/Content/images/client.jpg" class="img-fluid" alt="User Image">
+                    <h5 class="mb-3">@Model.Name</h5>
+                    <p class="mb-2"><strong>User Name:</strong>  @Model.UserName</p>
+                    <p class="mb-2"><strong>Address:</strong>  @Model.Address</p>
+                    <p class="mb-4"><strong>Email:</strong>  @Model.Email</p>
+                    @Html.ActionLink("Edit", "EditClientProfile", "Account", null, new { @class = "btn btn-primary edit" })
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
