@@ -19,6 +19,7 @@ namespace CoffeeStore.BuiesnessLogic.Interfaces
 
         IEnumerable<DeliveryCostDTO> GetAllDeliveriesCost();
         void SetDelivery(DeliveryCostDTO deliveryCostDTO);
+        bool RemoveDiscount();
         void Dispose();
 
     }

@@ -13,17 +13,14 @@
 
         @using (Html.BeginForm("SetDelivery", "Account", FormMethod.Post))
         {
-
             <div class="form-group">
                 @Html.LabelFor(model => model.Cost)
                 @Html.TextBoxFor(model => model.Cost, new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Cost, "", new { @class = "text-danger" })
-
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
-
         }
 
-    </div>
+</div>
 </div>

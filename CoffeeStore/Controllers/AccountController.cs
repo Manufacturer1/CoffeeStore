@@ -417,8 +417,19 @@ namespace CoffeeStore.Controllers
 
             return RedirectToAction("AdminDashboard");
         }
-    
 
+        [HttpPost]
+        [Authorize(Roles = "admin")] 
+        public ActionResult DeleteDiscount()
+        {
+            bool response = cartService.RemoveDiscount();
+            if (!response)
+            {
+                ModelState.AddModelError("", "The discount was already removed!");
+                return View("DiscountPage", new DiscountViewModel());
+            }
+            return RedirectToAction("DiscountPage", "Account");
+        }
 
         protected override void Dispose(bool disposing)
         {

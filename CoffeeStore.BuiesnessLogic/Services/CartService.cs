@@ -202,5 +202,16 @@ namespace CoffeeStore.BuiesnessLogic.Services
             return deliveriesDTO;   
         }
 
+        public bool RemoveDiscount()
+        {
+            var discount = GetAllDiscounts().LastOrDefault();
+            if(discount != null)
+            {
+                DataBase.Discounts.Delete(discount.Id,null);
+                DataBase.Save();
+                return true;
+            }
+            return false;   
+        }
     }
 }
